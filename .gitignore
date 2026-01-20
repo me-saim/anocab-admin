@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Production
+/build
+/dist
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+*.log
+
+# Server
+/server/node_modules
+/server/.env
+anocabadmin/server/node_modules
+anocabadmin/server/.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Writable/uploads (keep structure but ignore contents)
+anocabadmin/writable/uploads/*
+!anocabadmin/writable/uploads/.gitkeep
