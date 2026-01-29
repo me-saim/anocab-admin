@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { qrCodesAPI } from '../../services/api';
 import jsPDF from 'jspdf';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './QRCodeForm.css';
 
 const QRCodeForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     product: '',
@@ -38,7 +40,7 @@ const QRCodeForm = () => {
       }
     } catch (error) {
       console.error('Error fetching QR code:', error);
-      alert('Error fetching QR code: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching QR code: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -150,7 +152,7 @@ const QRCodeForm = () => {
       pdf.save(fileName);
     } catch (error) {
       console.error('Error generating PDF:', error);
-      alert('Error generating PDF: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error generating PDF: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -172,7 +174,7 @@ const QRCodeForm = () => {
 
       if (id) {
         await qrCodesAPI.update(id, dataToSend);
-        alert('QR code updated successfully!');
+        await dialog.alert('QR code updated successfully!');
         navigate('/qr-codes');
       } else {
         const quantity = parseInt(dataToSend.quantity) || 1;
@@ -180,15 +182,15 @@ const QRCodeForm = () => {
         const response = await qrCodesAPI.create(dataToSend);
         if (response.data && response.data.codes) {
           setGeneratedQRCodes(response.data.codes);
-          alert(`${quantity} QR code(s) created successfully! You can view and download them below.`);
+          await dialog.alert(`${quantity} QR code(s) created successfully! You can view and download them below.`);
         } else {
-          alert('QR code created successfully!');
+          await dialog.alert('QR code created successfully!');
           navigate('/qr-codes');
         }
       }
     } catch (error) {
       console.error('Error saving QR code:', error);
-      alert('Error saving QR code: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving QR code: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -290,12 +292,12 @@ const QRCodeForm = () => {
                     const shareUrl = `${window.location.origin}/qr-codes/view/${generatedQRCodes.map(qr => qr.id).join(',')}`;
                     if (navigator.clipboard) {
                       navigator.clipboard.writeText(shareUrl).then(() => {
-                        alert('Shareable link copied to clipboard!');
+                        dialog.alert('Shareable link copied to clipboard!');
                       }).catch(() => {
-                        prompt('Copy this link:', shareUrl);
+                        dialog.alert('Unable to copy automatically. Please copy this link:\n\n' + shareUrl);
                       });
                     } else {
-                      prompt('Copy this link:', shareUrl);
+                      dialog.alert('Please copy this link:\n\n' + shareUrl);
                     }
                   }}
                 >

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { blogsAPI, uploadAPI } from '../../services/api';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './BlogForm.css';
 
 const BlogForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -40,7 +42,7 @@ const BlogForm = () => {
       }
     } catch (error) {
       console.error('Error fetching blog:', error);
-      alert('Error fetching blog: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching blog: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -76,7 +78,7 @@ const BlogForm = () => {
       return response.data.url;
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Error uploading image: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error uploading image: ' + (error.message || 'Unknown error'));
       return null;
     } finally {
       setUploading(false);
@@ -106,15 +108,15 @@ const BlogForm = () => {
 
       if (id) {
         await blogsAPI.update(id, dataToSend);
-        alert('Blog updated successfully!');
+        await dialog.alert('Blog updated successfully!');
       } else {
         await blogsAPI.create(dataToSend);
-        alert('Blog created successfully!');
+        await dialog.alert('Blog created successfully!');
       }
       navigate('/blogs');
     } catch (error) {
       console.error('Error saving blog:', error);
-      alert('Error saving blog: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving blog: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }

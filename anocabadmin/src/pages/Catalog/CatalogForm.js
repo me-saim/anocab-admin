@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { catalogAPI } from '../../services/api';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './CatalogForm.css';
 
 const CatalogForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -34,7 +36,7 @@ const CatalogForm = () => {
       });
     } catch (error) {
       console.error('Error fetching catalog:', error);
-      alert('Error fetching catalog: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching catalog: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -58,15 +60,15 @@ const CatalogForm = () => {
 
       if (id) {
         await catalogAPI.update(id, dataToSend);
-        alert('Catalog updated successfully!');
+        await dialog.alert('Catalog updated successfully!');
       } else {
         await catalogAPI.create(dataToSend);
-        alert('Catalog created successfully!');
+        await dialog.alert('Catalog created successfully!');
       }
       navigate('/catalog');
     } catch (error) {
       console.error('Error saving catalog:', error);
-      alert('Error saving catalog: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving catalog: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }

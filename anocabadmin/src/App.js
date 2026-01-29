@@ -19,6 +19,9 @@ import RedeemTransactions from './pages/RedeemTransactions/RedeemTransactions';
 import PaymentTransactions from './pages/PaymentTransactions/PaymentTransactions';
 import CalculatorData from './pages/CalculatorData/CalculatorData';
 import CalculatorDataForm from './pages/CalculatorData/CalculatorDataForm';
+import PointValueSettings from './pages/PointValueSettings/PointValueSettings';
+import KYCApprovals from './pages/KYC/KYCApprovals';
+import RedeemApprovals from './pages/RedeemApprovals/RedeemApprovals';
 import './App.css';
 
 const PrivateRoute = ({ children }) => {
@@ -260,6 +263,36 @@ function App() {
             <PrivateRoute>
               <DashboardLayout>
                 <CalculatorDataForm />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/point-value-settings"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <PointValueSettings />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/kyc-approvals"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <KYCApprovals />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/redeem-approvals"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <RedeemApprovals />
               </DashboardLayout>
             </PrivateRoute>
           }

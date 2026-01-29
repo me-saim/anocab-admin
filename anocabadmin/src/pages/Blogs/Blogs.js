@@ -3,10 +3,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { blogsAPI } from '../../services/api';
 import Modal from '../../components/Modal/Modal';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './Blogs.css';
 
 const Blogs = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +37,7 @@ const Blogs = () => {
       setBlogs(response.data);
     } catch (error) {
       console.error('Error fetching blogs:', error);
-      alert('Error fetching blogs: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching blogs: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -86,16 +88,16 @@ const Blogs = () => {
 
       if (selectedBlog) {
         await blogsAPI.update(selectedBlog.id, dataToSend);
-        alert('Blog updated successfully!');
+        await dialog.alert('Blog updated successfully!');
       } else {
         await blogsAPI.create(dataToSend);
-        alert('Blog created successfully!');
+        await dialog.alert('Blog created successfully!');
       }
       handleCloseModal();
       fetchBlogs();
     } catch (error) {
       console.error('Error saving blog:', error);
-      alert('Error saving blog: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving blog: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -107,13 +109,13 @@ const Blogs = () => {
   const handleDeleteConfirm = async () => {
     try {
       await blogsAPI.delete(selectedBlog.id);
-      alert('Blog deleted successfully!');
+      await dialog.alert('Blog deleted successfully!');
       setIsDeleteDialogOpen(false);
       setSelectedBlog(null);
       fetchBlogs();
     } catch (error) {
       console.error('Error deleting blog:', error);
-      alert('Error deleting blog: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error deleting blog: ' + (error.message || 'Unknown error'));
     }
   };
 

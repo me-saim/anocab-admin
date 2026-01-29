@@ -3,10 +3,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { catalogAPI } from '../../services/api';
 import Modal from '../../components/Modal/Modal';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './Catalog.css';
 
 const Catalog = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [catalogs, setCatalogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +33,7 @@ const Catalog = () => {
       setCatalogs(response.data);
     } catch (error) {
       console.error('Error fetching catalogs:', error);
-      alert('Error fetching catalogs: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching catalogs: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -84,16 +86,16 @@ const Catalog = () => {
 
       if (selectedCatalog) {
         await catalogAPI.update(selectedCatalog.id, dataToSend);
-        alert('Catalog updated successfully!');
+        await dialog.alert('Catalog updated successfully!');
       } else {
         await catalogAPI.create(dataToSend);
-        alert('Catalog created successfully!');
+        await dialog.alert('Catalog created successfully!');
       }
       handleCloseModal();
       fetchCatalogs();
     } catch (error) {
       console.error('Error saving catalog:', error);
-      alert('Error saving catalog: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving catalog: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -105,13 +107,13 @@ const Catalog = () => {
   const handleDeleteConfirm = async () => {
     try {
       await catalogAPI.delete(selectedCatalog.id);
-      alert('Catalog deleted successfully!');
+      await dialog.alert('Catalog deleted successfully!');
       setIsDeleteDialogOpen(false);
       setSelectedCatalog(null);
       fetchCatalogs();
     } catch (error) {
       console.error('Error deleting catalog:', error);
-      alert('Error deleting catalog: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error deleting catalog: ' + (error.message || 'Unknown error'));
     }
   };
 

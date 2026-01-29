@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { qrCodesAPI } from '../../services/api';
 import jsPDF from 'jspdf';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './QRCodeView.css';
 
 const QRCodeView = () => {
   const { ids } = useParams();
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [qrCodes, setQrCodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [productInfo, setProductInfo] = useState(null);
@@ -23,7 +25,7 @@ const QRCodeView = () => {
       const idArray = ids.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
       
       if (idArray.length === 0) {
-        alert('Invalid QR code IDs');
+        await dialog.alert('Invalid QR code IDs');
         navigate('/qr-codes');
         return;
       }
@@ -42,7 +44,7 @@ const QRCodeView = () => {
       }
     } catch (error) {
       console.error('Error fetching QR codes:', error);
-      alert('Error fetching QR codes: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching QR codes: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -153,7 +155,7 @@ const QRCodeView = () => {
       pdf.save(fileName);
     } catch (error) {
       console.error('Error generating PDF:', error);
-      alert('Error generating PDF: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error generating PDF: ' + (error.message || 'Unknown error'));
     }
   };
 

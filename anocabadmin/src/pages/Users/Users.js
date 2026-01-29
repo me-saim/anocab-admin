@@ -3,10 +3,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { usersAPI } from '../../services/api';
 import Modal from '../../components/Modal/Modal';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './Users.css';
 
 const Users = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,7 +57,7 @@ const Users = () => {
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
-      alert('Error fetching users: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching users: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -145,16 +147,16 @@ const Users = () => {
 
       if (selectedUser) {
         await usersAPI.update(selectedUser.id, dataToSend);
-        alert('User updated successfully!');
+        await dialog.alert('User updated successfully!');
       } else {
         await usersAPI.create(dataToSend);
-        alert('User created successfully!');
+        await dialog.alert('User created successfully!');
       }
       handleCloseModal();
       fetchUsers();
     } catch (error) {
       console.error('Error saving user:', error);
-      alert('Error saving user: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving user: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -166,13 +168,13 @@ const Users = () => {
   const handleDeleteConfirm = async () => {
     try {
       await usersAPI.delete(selectedUser.id);
-      alert('User deleted successfully!');
+      await dialog.alert('User deleted successfully!');
       setIsDeleteDialogOpen(false);
       setSelectedUser(null);
       fetchUsers();
     } catch (error) {
       console.error('Error deleting user:', error);
-      alert('Error deleting user: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error deleting user: ' + (error.message || 'Unknown error'));
     }
   };
 

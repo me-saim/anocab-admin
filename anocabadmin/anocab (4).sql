@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2025 at 05:47 PM
+-- Generation Time: Jan 24, 2026 at 05:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -155,6 +155,14 @@ CREATE TABLE `admins` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`id`, `username`, `email`, `password`, `first_name`, `last_name`, `role`, `status`, `last_login`, `created_at`, `updated_at`) VALUES
+(3, 'adminn', 'admin@anocab.com', 'admin123', 'Admin', 'User', 'admin', 1, '2025-12-13 03:02:30', '2025-12-12 18:18:04', '2025-12-13 03:02:30'),
+(4, 'admin', 'admin@gmail.com', 'asd123', 'Admin', 'User', 'admin', 1, '2026-01-24 03:46:26', '2025-12-12 18:20:56', '2026-01-24 03:46:26');
+
 -- --------------------------------------------------------
 
 --
@@ -173,6 +181,14 @@ CREATE TABLE `blogs` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `blogs`
+--
+
+INSERT INTO `blogs` (`id`, `title`, `description`, `img`, `type`, `status`, `views`, `created_by`, `created_at`, `updated_at`) VALUES
+(1, 'New Offer!', 'now get things on very less price', 'http://localhost:5000/writable/uploads/img-1766027733345-939235193.jpg', 2, 1, 0, 4, '2025-12-18 03:15:33', '2025-12-18 03:15:33'),
+(2, 'Crishmas discount offer', 'product discount offer product discount offer', 'http://localhost:5000/writable/uploads/img-1766162703738-673317766.png', 1, 1, 0, 4, '2025-12-19 16:45:04', '2025-12-19 16:45:04');
 
 -- --------------------------------------------------------
 
@@ -242,6 +258,8 @@ CREATE TABLE `payment_transactions` (
 CREATE TABLE `qr_codes` (
   `id` int(11) NOT NULL,
   `code` varchar(255) NOT NULL COMMENT 'QR code string',
+  `product` text NOT NULL,
+  `details` text NOT NULL,
   `points` decimal(10,2) NOT NULL DEFAULT 0.00 COMMENT 'Points awarded for scanning',
   `is_scanned` tinyint(4) DEFAULT 0 COMMENT '0=Not scanned, 1=Scanned',
   `scanned_by` int(11) DEFAULT NULL COMMENT 'User ID who scanned it',
@@ -250,6 +268,41 @@ CREATE TABLE `qr_codes` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `expires_at` timestamp NULL DEFAULT NULL COMMENT 'Optional expiration date'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `qr_codes`
+--
+
+INSERT INTO `qr_codes` (`id`, `code`, `product`, `details`, `points`, `is_scanned`, `scanned_by`, `scanned_at`, `created_by`, `created_at`, `expires_at`) VALUES
+(1, 'QR-1765763602641-GXGDAZBRU', 'orange', 'this is a fruit', 0.20, 0, NULL, NULL, 4, '2025-12-15 01:53:22', '2025-12-16 18:30:00'),
+(2, 'QR-1765764159346-0-U4MJ4TUVJ', 'banana', 'this is a fruit ', 0.20, 0, NULL, NULL, 4, '2025-12-15 02:02:39', '2025-12-17 18:30:00'),
+(3, 'QR-1765764159346-1-6HDNV2GYA', 'banana', 'this is a fruit ', 0.20, 0, NULL, NULL, 4, '2025-12-15 02:02:39', '2025-12-17 18:30:00'),
+(4, 'QR-1765764159346-2-ZBUSB4SVH', 'banana', 'this is a fruit ', 0.20, 0, NULL, NULL, 4, '2025-12-15 02:02:39', '2025-12-17 18:30:00'),
+(5, 'QR-1765764159346-3-4MV83UFXY', 'banana', 'this is a fruit ', 0.20, 0, NULL, NULL, 4, '2025-12-15 02:02:39', '2025-12-17 18:30:00'),
+(6, 'QR-1765764159346-4-JPSC6NI80', 'banana', 'this is a fruit ', 0.20, 0, NULL, NULL, 4, '2025-12-15 02:02:39', '2025-12-17 18:30:00'),
+(7, 'QR-1765764503808-0-LESSQOLS4', 'apple', 'this is a fruit', 1.00, 0, NULL, NULL, 4, '2025-12-15 02:08:23', '2025-12-18 18:30:00'),
+(8, 'QR-1765764503809-1-4C23X8YN7', 'apple', 'this is a fruit', 1.00, 0, NULL, NULL, 4, '2025-12-15 02:08:23', '2025-12-18 18:30:00'),
+(9, 'QR-1765764503809-2-GN63T7HYA', 'apple', 'this is a fruit', 1.00, 0, NULL, NULL, 4, '2025-12-15 02:08:23', '2025-12-18 18:30:00'),
+(10, 'QR-1766162906933-0-0ZAF6WZ48', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(11, 'QR-1766162906933-1-C1SB2RU9K', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(12, 'QR-1766162906933-2-175OK1KLE', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(13, 'QR-1766162906933-3-TROFTC15N', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(14, 'QR-1766162906933-4-QZ6VP2LV1', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(15, 'QR-1766162906933-5-3L2HJZV9S', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(16, 'QR-1766162906933-6-SIO879H09', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(17, 'QR-1766162906933-7-HZOVOL9AR', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(18, 'QR-1766162906933-8-JIDFBT6X9', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(19, 'QR-1766162906933-9-R189U7VOX', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:48:26', '2025-12-19 18:30:00'),
+(20, 'QR-1766162946805-0-4QEOZ2ITY', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00'),
+(21, 'QR-1766162946805-1-VXKZZAS6Q', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00'),
+(22, 'QR-1766162946805-2-3O24EJ1R0', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00'),
+(23, 'QR-1766162946806-3-0YJNP330Z', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00'),
+(24, 'QR-1766162946806-4-A7EQ492K7', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00'),
+(25, 'QR-1766162946806-5-AJ6LGSMFX', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00'),
+(26, 'QR-1766162946806-6-I0489UNHF', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00'),
+(27, 'QR-1766162946806-7-04IBJR181', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00'),
+(28, 'QR-1766162946806-8-AJLVN35A0', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00'),
+(29, 'QR-1766162946806-9-B0MNRN5VX', 'AB Cable', 'Cable wire', 3.00, 0, NULL, NULL, 4, '2025-12-19 16:49:06', '2025-12-19 18:30:00');
 
 -- --------------------------------------------------------
 
@@ -331,6 +384,36 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_by` int(11) DEFAULT NULL COMMENT 'Admin ID who last updated',
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `userID`, `first_name`, `last_name`, `dob`, `m_number`, `gender`, `user_type`, `country_code`, `email`, `password`, `city`, `status`, `points`, `address`, `pin_code`, `brand`, `electrician_mobile`, `godown`, `contact_person`, `dealer_mobile`, `remark`, `created_by`, `created_at`, `updated_by`, `updated_at`) VALUES
+(1, 1, 'shivam', 'sah', '2005-10-21', '9508570649', 'Male', 'regular_user', 91, 'shivam@gmail.com', '$2y$10$fHbgUeHMzET/m/WgnP7nb.aWNa6QfxV17J73DCF3pWV73iGfRHP..', 'jabalpur', 0, 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-15 02:58:52', NULL, '2025-12-15 02:58:52'),
+(2, 2, 'saim', 'dev', '2007-12-11', '9508570246', 'Male', 'electrician', 91, 'shivamm@gmail.com', '$2y$10$IuziaNJEKfWWZo6ETNiB4urKG1Edul7VBKjEkk0XV10AWuchYLvyK', 'bhopal', 0, 0.00, 'jabalpur,mahadhya pradesh', '482003', 'apple', NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-15 03:18:00', NULL, '2025-12-15 03:18:00'),
+(3, 3, 'suresh', 'upadhyay', '1995-12-23', '9999999991', 'Male', 'electrician', 91, 'suresh@gmail.com', '$2y$10$ceIZLhTjPOXP8EMWGgdlxO3nMx7JnZoOxYLiPr.W/7GTG0AJ.cAee', 'jabalpur', 0, 0.00, 'bhopal', '500049', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-18 02:37:35', NULL, '2025-12-18 02:37:35'),
+(4, 4, 'raju', 'singh', '1999-11-03', '9999999992', 'Male', 'dealer', 91, 'raju@gmail.com', '$2y$10$x2MhMhl2FW1o4AZ7QlTf4uZTQfzdKZGqEtXUa.UZOTaE6o3yhxP7O', 'katani', 0, 0.00, 'katani,jabalpur', '451002', NULL, NULL, 'ilari', '9999999992', NULL, 'khush raho', NULL, '2025-12-18 02:45:22', NULL, '2025-12-18 02:45:22'),
+(5, 5, 'ashish', 'tiwari', '2003-12-19', '9508570849', 'Male', 'electrician', 91, 'ashishu703@gmail.com', '$2y$10$csCZkEVZ.Rt2iLkaPQwKzeAFVX5J3bHWIcC1zwK.49zytCDsHQXfO', 'jabalpur', 0, 0.00, 'jharkhand,garhwa', '822120', 'refrigerator mechnic', NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-19 16:38:05', NULL, '2025-12-19 16:38:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `point_value_settings`
+--
+
+CREATE TABLE `point_value_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `points` int(11) NOT NULL COMMENT 'e.g., 10',
+  `rupees` decimal(10,2) NOT NULL COMMENT 'e.g., 1.00',
+  `is_active` tinyint(4) DEFAULT 1 COMMENT '1=Active, 0=Inactive',
+  `created_by` int(11) DEFAULT NULL COMMENT 'Admin ID',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_is_active` (`is_active`),
+  KEY `idx_created_by` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -596,13 +679,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `blogs`
 --
 ALTER TABLE `blogs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `calculator_data`
@@ -626,7 +709,7 @@ ALTER TABLE `payment_transactions`
 -- AUTO_INCREMENT for table `qr_codes`
 --
 ALTER TABLE `qr_codes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `qr_scans`
@@ -644,7 +727,7 @@ ALTER TABLE `redeem_transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

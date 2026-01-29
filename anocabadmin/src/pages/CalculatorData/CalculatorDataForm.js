@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { calculatorDataAPI } from '../../services/api';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './CalculatorDataForm.css';
 
 const CalculatorDataForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     category: '',
@@ -36,7 +38,7 @@ const CalculatorDataForm = () => {
       });
     } catch (error) {
       console.error('Error fetching calculator data:', error);
-      alert('Error fetching calculator data: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching calculator data: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -58,15 +60,15 @@ const CalculatorDataForm = () => {
 
       if (id) {
         await calculatorDataAPI.update(id, dataToSend);
-        alert('Calculator data updated successfully!');
+        await dialog.alert('Calculator data updated successfully!');
       } else {
         await calculatorDataAPI.create(dataToSend);
-        alert('Calculator data created successfully!');
+        await dialog.alert('Calculator data created successfully!');
       }
       navigate('/calculator-data');
     } catch (error) {
       console.error('Error saving calculator data:', error);
-      alert('Error saving calculator data: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving calculator data: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { adminsAPI } from '../../services/api';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './AdminForm.css';
 
 const AdminForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -38,7 +40,7 @@ const AdminForm = () => {
       });
     } catch (error) {
       console.error('Error fetching admin:', error);
-      alert('Error fetching admin: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching admin: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -58,15 +60,15 @@ const AdminForm = () => {
 
       if (id) {
         await adminsAPI.update(id, dataToSend);
-        alert('Admin updated successfully!');
+        await dialog.alert('Admin updated successfully!');
       } else {
         await adminsAPI.create(dataToSend);
-        alert('Admin created successfully!');
+        await dialog.alert('Admin created successfully!');
       }
       navigate('/admins');
     } catch (error) {
       console.error('Error saving admin:', error);
-      alert('Error saving admin: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving admin: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }

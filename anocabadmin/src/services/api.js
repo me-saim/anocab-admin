@@ -138,4 +138,32 @@ export const dashboardAPI = {
   getRecent: () => api.get('/dashboard/recent'),
 };
 
+// Point Value Settings (points = rupees)
+export const pointValueSettingsAPI = {
+  getActive: () => api.get('/point-value-settings'),
+  update: (data) => api.put('/point-value-settings', data),
+};
+
+// User KYC
+export const userKycAPI = {
+  getAll: (params) => api.get('/user-kyc', { params }),
+  getById: (id) => api.get(`/user-kyc/${id}`),
+  getByUserId: (userId) => api.get(`/user-kyc/user/${userId}`),
+  upsert: (data) => api.post('/user-kyc', data),
+  updateApproval: (id, data) => api.put(`/user-kyc/${id}/approval`, data),
+};
+
+// Redeem payouts (admin manual payouts)
+export const redeemPayoutsAPI = {
+  getAll: (params) => api.get('/redeem-payouts', { params }),
+  getById: (id) => api.get(`/redeem-payouts/${id}`),
+  create: (data) => api.post('/redeem-payouts', data),
+  markDone: (data) => api.post('/redeem-payouts/mark-done', data),
+};
+
+// Notifications (admin header)
+export const notificationsAPI = {
+  getAll: (params) => api.get('/notifications', { params }),
+};
+
 export default api;

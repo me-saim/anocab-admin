@@ -3,10 +3,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { adminsAPI } from '../../services/api';
 import Modal from '../../components/Modal/Modal';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './Admins.css';
 
 const Admins = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +35,7 @@ const Admins = () => {
       setAdmins(response.data);
     } catch (error) {
       console.error('Error fetching admins:', error);
-      alert('Error fetching admins: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching admins: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -85,16 +87,16 @@ const Admins = () => {
       }
       if (selectedAdmin) {
         await adminsAPI.update(selectedAdmin.id, dataToSend);
-        alert('Admin updated successfully!');
+        await dialog.alert('Admin updated successfully!');
       } else {
         await adminsAPI.create(dataToSend);
-        alert('Admin created successfully!');
+        await dialog.alert('Admin created successfully!');
       }
       handleCloseModal();
       fetchAdmins();
     } catch (error) {
       console.error('Error saving admin:', error);
-      alert('Error saving admin: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving admin: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -106,13 +108,13 @@ const Admins = () => {
   const handleDeleteConfirm = async () => {
     try {
       await adminsAPI.delete(selectedAdmin.id);
-      alert('Admin deleted successfully!');
+      await dialog.alert('Admin deleted successfully!');
       setIsDeleteDialogOpen(false);
       setSelectedAdmin(null);
       fetchAdmins();
     } catch (error) {
       console.error('Error deleting admin:', error);
-      alert('Error deleting admin: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error deleting admin: ' + (error.message || 'Unknown error'));
     }
   };
 

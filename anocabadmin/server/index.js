@@ -28,6 +28,10 @@ app.use('/api/qr-scans', require('./routes/qrScans'));
 app.use('/api/redeem-transactions', require('./routes/redeemTransactions'));
 app.use('/api/payment-transactions', require('./routes/paymentTransactions'));
 app.use('/api/calculator-data', require('./routes/calculatorData'));
+app.use('/api/point-value-settings', require('./routes/pointValueSettings'));
+app.use('/api/user-kyc', require('./routes/userKyc'));
+app.use('/api/redeem-payouts', require('./routes/redeemPayouts'));
+app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/upload', require('./routes/upload'));
 

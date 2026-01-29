@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usersAPI } from '../../services/api';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './UserForm.css';
 
 const UserForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     userID: '',
@@ -64,7 +66,7 @@ const UserForm = () => {
       });
     } catch (error) {
       console.error('Error fetching user:', error);
-      alert('Error fetching user: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching user: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -89,15 +91,15 @@ const UserForm = () => {
 
       if (id) {
         await usersAPI.update(id, dataToSend);
-        alert('User updated successfully!');
+        await dialog.alert('User updated successfully!');
       } else {
         await usersAPI.create(dataToSend);
-        alert('User created successfully!');
+        await dialog.alert('User created successfully!');
       }
       navigate('/users');
     } catch (error) {
       console.error('Error saving user:', error);
-      alert('Error saving user: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving user: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }

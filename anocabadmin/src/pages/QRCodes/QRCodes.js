@@ -3,10 +3,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { qrCodesAPI } from '../../services/api';
 import Modal from '../../components/Modal/Modal';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './QRCodes.css';
 
 const QRCodes = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [qrCodes, setQrCodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,7 +36,7 @@ const QRCodes = () => {
       setQrCodes(response.data);
     } catch (error) {
       console.error('Error fetching QR codes:', error);
-      alert('Error fetching QR codes: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching QR codes: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -88,18 +90,18 @@ const QRCodes = () => {
 
       if (selectedQR) {
         await qrCodesAPI.update(selectedQR.id, dataToSend);
-        alert('QR code updated successfully!');
+        await dialog.alert('QR code updated successfully!');
         handleCloseModal();
         fetchQRCodes();
       } else {
         await qrCodesAPI.create(dataToSend);
-        alert('QR code created successfully! Please use the form page to generate and download QR codes.');
+        await dialog.alert('QR code created successfully! Please use the form page to generate and download QR codes.');
         handleCloseModal();
         fetchQRCodes();
       }
     } catch (error) {
       console.error('Error saving QR code:', error);
-      alert('Error saving QR code: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving QR code: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -111,13 +113,13 @@ const QRCodes = () => {
   const handleDeleteConfirm = async () => {
     try {
       await qrCodesAPI.delete(selectedQR.id);
-      alert('QR code deleted successfully!');
+      await dialog.alert('QR code deleted successfully!');
       setIsDeleteDialogOpen(false);
       setSelectedQR(null);
       fetchQRCodes();
     } catch (error) {
       console.error('Error deleting QR code:', error);
-      alert('Error deleting QR code: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error deleting QR code: ' + (error.message || 'Unknown error'));
     }
   };
 

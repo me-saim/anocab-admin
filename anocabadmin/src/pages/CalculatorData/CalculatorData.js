@@ -3,10 +3,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { calculatorDataAPI } from '../../services/api';
 import Modal from '../../components/Modal/Modal';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import { useDialog } from '../../components/DialogProvider/DialogProvider';
 import './CalculatorData.css';
 
 const CalculatorData = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +38,7 @@ const CalculatorData = () => {
       setData(response.data);
     } catch (error) {
       console.error('Error fetching calculator data:', error);
-      alert('Error fetching calculator data: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error fetching calculator data: ' + (error.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -89,16 +91,16 @@ const CalculatorData = () => {
 
       if (selectedItem) {
         await calculatorDataAPI.update(selectedItem.id, dataToSend);
-        alert('Calculator data updated successfully!');
+        await dialog.alert('Calculator data updated successfully!');
       } else {
         await calculatorDataAPI.create(dataToSend);
-        alert('Calculator data created successfully!');
+        await dialog.alert('Calculator data created successfully!');
       }
       handleCloseModal();
       fetchData();
     } catch (error) {
       console.error('Error saving calculator data:', error);
-      alert('Error saving calculator data: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error saving calculator data: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -110,13 +112,13 @@ const CalculatorData = () => {
   const handleDeleteConfirm = async () => {
     try {
       await calculatorDataAPI.delete(selectedItem.id);
-      alert('Calculator data deleted successfully!');
+      await dialog.alert('Calculator data deleted successfully!');
       setIsDeleteDialogOpen(false);
       setSelectedItem(null);
       fetchData();
     } catch (error) {
       console.error('Error deleting calculator data:', error);
-      alert('Error deleting calculator data: ' + (error.message || 'Unknown error'));
+      await dialog.alert('Error deleting calculator data: ' + (error.message || 'Unknown error'));
     }
   };
 
